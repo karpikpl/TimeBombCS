@@ -13,9 +13,8 @@ namespace TimeBomb
                 data[i] = Console.ReadLine();
             }
 
-            var result = Solver.ParseArray(data);
-
-            Console.WriteLine(result % 6 == 0 ? "BEER!!" : "BOOM!!");
+            var result = Solver.Solve(data);
+            Console.WriteLine(result);
         }
     }
 }

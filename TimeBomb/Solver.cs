@@ -21,7 +21,7 @@ namespace TimeBomb
         {"   \n   \n   \n  *\n   ",0}
         };
 
-        public static int ParseArray(string[] data)
+        public static int? ParseArray(string[] data)
         {
             var digitsCount = (data[0].Length + 1) / 4;
 
@@ -39,12 +39,19 @@ namespace TimeBomb
             for (int i = 0; i < digits.Length; i++)
             {
                 if (!Numbers.ContainsKey(digits[i]))
-                    Debug.WriteLine(digits[i]);
+                    return null;
 
                 intRes += (int)Math.Pow(10, digits.Length - i - 1) * Numbers[digits[i]];
             }
 
             return intRes;
+        }
+
+        public static string Solve(string[] data)
+        {
+            var result = Solver.ParseArray(data);
+
+            return (result % 6 == 0 ? "BEER!!" : "BOOM!!");
         }
     }
 }

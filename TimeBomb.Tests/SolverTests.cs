@@ -1,4 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace TimeBomb.Tests
 {
@@ -9,106 +12,20 @@ namespace TimeBomb.Tests
         public void ParseArray_Should_ParseSampleData1()
         {
             // Arrange
-            string[] data =
+            var testFiles = Directory.GetFiles("./data/", "*.in");
+
+            foreach (var testFile in testFiles)
             {
-                "***   * * * *** *** *** ***",
-                "* *   * * *   *   *   * *  ",
-                "* *   * *** *** *** *** ***",
-                "* *   *   * *     * *   * *",
-                "***   *   * *** *** *** ***"
-            };
-            const int expected = 142326;
+                string expectedResponse = File.ReadAllText(testFile.Replace(".in", ".ans")).Trim();
+                string[] testData = File.ReadAllLines(testFile);
 
-            // Act
-            var result = Solver.ParseArray(data);
+                // Act
+                var result = Solver.Solve(testData);
 
-            // Assert
-            Assert.AreEqual(expected, result);
-        }
-
-        [TestMethod]
-        public void ParseArray_Should_ParseSampleData2()
-        {
-            // Arrange
-            string[] data =
-            {
-  "  *   * *** *** *** * *",
-  "  *   *   *   * * * * *",
-  "  *   * *** *** *** ***",
-  "  *   * *   *   * *   *",
-  "  *   * *** *** ***   *"
-            };
-            const int expected = 112284;
-
-            // Act
-            var result = Solver.ParseArray(data);
-
-            // Assert
-            Assert.AreEqual(expected, result);
-        }
-
-
-        [TestMethod]
-        public void ParseArray_Should_ParseSampleData3()
-        {
-            // Arrange
-            string[] data =
-            {
-"*** ***   * *** ***   *",
-"*   * *   * * *   *   *",
-"*** * *   * *** ***   *",
-"  * * *   *   * *     *",
-"*** ***   * *** ***   *"
-            };
-            const int expected = 501921;
-
-            // Act
-            var result = Solver.ParseArray(data);
-
-            // Assert
-            Assert.AreEqual(expected, result);
-        }
-
-        [TestMethod]
-        public void ParseArray_Should_ParseSampleData4()
-        {
-            // Arrange
-            string[] data =
-            {
-"*** *** *** * * ***",
-"  *   *   * * * * *",
-"***   * *** *** ***",
-"*     *   *   * * *",
-"***   * ***   * ***"
-            };
-            const int expected = 27348;
-
-            // Act
-            var result = Solver.ParseArray(data);
-
-            // Assert
-            Assert.AreEqual(expected, result);
-        }
-
-        [TestMethod]
-        public void ParseArray_Should_ParseSampleData5()
-        {
-            // Arrange
-            string[] data =
-            {
-"***   * *** *** * * *** *** *** *** ***",
-"* *   *   *   * * * *   *     * * * * *",
-"* *   * *** *** *** *** ***   * *** ***",
-"* *   * *     *   *   * * *   * * *   *",
-"***   * *** ***   * *** ***   * *** ***"
-            };
-            const int expected = 0123456789;
-
-            // Act
-            var result = Solver.ParseArray(data);
-
-            // Assert
-            Assert.AreEqual(expected, result);
+                // Assert
+                Assert.AreEqual(expectedResponse, result, "Failed for " + Path.GetFileName(testFile));
+                Console.WriteLine("Worked for: {0}", Path.GetFileName(testFile));
+            }
         }
     }
 }
